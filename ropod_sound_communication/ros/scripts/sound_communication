@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+from ropod_sound_communication.sound_communication import SoundCommunication
+
+if __name__ == '__main__':
+    main = SoundCommunication('config')
