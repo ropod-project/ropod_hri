@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-from ropod_sound_communication.sound_communication import SoundCommunication
+import rospy
+from ropod_sound_communication.sound_communication import SoundCommunicator
 
 if __name__ == '__main__':
-    main = SoundCommunication('config')
+    rospy.init_node('ropod_sound_communication')
+    sound_communicator = SoundCommunicator()
+    rospy.spin()

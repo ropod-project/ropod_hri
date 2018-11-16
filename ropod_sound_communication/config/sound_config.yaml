@@ -1,0 +1,4 @@
+ready: ready.wav
+success: success.wav
+stop: stop.wav
+error: error.wav
