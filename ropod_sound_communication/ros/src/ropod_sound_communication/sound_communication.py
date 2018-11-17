@@ -3,7 +3,7 @@ import wave
 import pyaudio
 import yaml
 import rospy
-from std_msgs.msg import String
+from ropod_ros_msgs.msg import StateInfo
 
 class SoundCommunicator(object):
     def __init__(self):
@@ -16,10 +16,10 @@ class SoundCommunicator(object):
             self.sound_file_dictionary = yaml.load(sound_config_file)
 
         self.audio_manager = pyaudio.PyAudio()
-        rospy.Subscriber(self.sound_request_topic, String, self.sound_cb)
+        rospy.Subscriber(self.sound_request_topic, StateInfo, self.sound_cb)
 
     def sound_cb(self, msg):
-        sound = msg.data
+        sound = msg.state
         try:
             sound_file = self.sound_file_dictionary[sound]
         except:
