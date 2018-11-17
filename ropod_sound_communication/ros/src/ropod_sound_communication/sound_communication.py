@@ -9,7 +9,7 @@ class SoundCommunicator(object):
     def __init__(self):
         self.sound_config = rospy.get_param('~sound_config', '')
         self.sound_collection = rospy.get_param('~sound_collection', 'willow-sound')
-        self.sound_request_topic = rospy.get_param('~sound_request_topic', '/make_sound')
+        self.sound_request_topic = rospy.get_param('~sound_request_topic', '/state_info')
 
         self.sound_file_dictionary = dict()
         with open(self.sound_config, 'r') as sound_config_file:

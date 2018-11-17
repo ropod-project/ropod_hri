@@ -4,6 +4,6 @@
     <node pkg="ropod_sound_communication" type="sound_communication" respawn="false" name="ropod_sound_communication" output="screen">
        <param name="sound_config" value="$(find ropod_sound_communication)/config/sound_config.yaml"/>
        <param name="sound_collection" value="$(find ropod_sound_collections)/collections/$(arg sound_collection)"/>
-       <param name="sound_request_topic" value="/ropod/make_sound"/>
+       <param name="sound_request_topic" value="/ropod/state_info"/>
     </node>
 </launch>
