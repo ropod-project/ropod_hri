@@ -5,5 +5,7 @@
        <param name="sound_config" value="$(find ropod_sound_communication)/config/sound_config.yaml"/>
        <param name="sound_collection" value="$(find ropod_sound_collections)/collections/$(arg sound_collection)"/>
        <param name="sound_request_topic" value="/ropod/state_info"/>
+       <param name="go_to_progress_topic" value="/task_progress/goto"/>
+       <param name="dock_progress_topic" value="/task_progress/dock"/>
     </node>
 </launch>
