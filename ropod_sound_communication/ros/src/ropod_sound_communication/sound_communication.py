@@ -4,15 +4,15 @@ import pyaudio
 import yaml
 import rospy
 from ropod_ros_msgs.msg import StateInfo, Status
-from ropod_ros_msgs.msg import TaskProgressGOTO, TaskProgressDOCK
+from ropod_ros_msgs.msg import GoToFeedback, DockFeedback
 
 class SoundCommunicator(object):
     def __init__(self):
         self.sound_config = rospy.get_param('~sound_config', '')
         self.sound_collection = rospy.get_param('~sound_collection', 'willow-sound')
         self.sound_request_topic = rospy.get_param('~sound_request_topic', '/state_info')
-        self.go_to_progress_topic = rospy.get_param('~go_to_progress_topic', '/task_progress/goto')
-        self.dock_progress_topic = rospy.get_param('~dock_progress_topic', '/task_progress/dock')
+        self.go_to_progress_topic = rospy.get_param('~go_to_progress_topic', '/ropod/goto/feedback')
+        self.dock_progress_topic = rospy.get_param('~dock_progress_topic', '/collect_cart/feedback')
 
         self.sound_file_dictionary = dict()
         with open(self.sound_config, 'r') as sound_config_file:
@@ -23,10 +23,10 @@ class SoundCommunicator(object):
                                                StateInfo,
                                                self.sound_cb)
         self.go_to_progress_sub = rospy.Subscriber(self.go_to_progress_topic,
-                                                   TaskProgressGOTO,
+                                                   GoToFeedback,
                                                    self.go_to_progress_cb)
         self.dock_progress_sub = rospy.Subscriber(self.dock_progress_topic,
-                                                  TaskProgressDOCK,
+                                                  DockFeedback,
                                                   self.dock_progress_cb)
 
     def sound_cb(self, msg):
@@ -41,26 +41,27 @@ class SoundCommunicator(object):
 
     def go_to_progress_cb(self, msg):
         try:
-            if msg.status.status_code == Status.SUCCESS:
+            if msg.feedback.status.status_code == Status.GOAL_REACHED:
                 self.__play_sound(self.sound_file_dictionary['success'])
-            elif msg.status.status_code == Status.FAILED:
+            elif msg.feedback.status.status_code == Status.FAILED:
                 self.__play_sound(self.sound_file_dictionary['error'])
             else:
                 rospy.loginfo('[sound_communication/go_to_progress_cb] No sound for status %d',
-                              msg.status.status_code)
+                              msg.feedback.status.status_code)
         except Exception as exc:
             rospy.logerr('[sound_communication/go_to_progress_cb] %s', str(exc))
             return
 
     def dock_progress_cb(self, msg):
         try:
-            if msg.status.status_code == Status.SUCCESS:
+            if (msg.feedback.status.module_code == Status.MOBIDIK_COLLECTION and
+                msg.feedback.status.status_code == Status.DOCKING_SEQUENCE_SUCCEEDED):
                 self.__play_sound(self.sound_file_dictionary['success'])
-            elif msg.status.status_code == Status.FAILED:
+            elif msg.feedback.status.status_code == Status.FAILED:
                 self.__play_sound(self.sound_file_dictionary['error'])
             else:
                 rospy.loginfo('[sound_communication/dock_progress_cb] No sound for status %d',
-                              msg.status.status_code)
+                              msg.feedback.status.status_code)
         except Exception as exc:
             rospy.logerr('[sound_communication/dock_progress_cb] %s', str(exc))
             return
