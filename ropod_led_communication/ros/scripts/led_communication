@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+import rospy
+from ropod_led_communication.led_communication import LEDCommunicator
+
+if __name__ == '__main__':
+    rospy.init_node('ropod_led_communication')
+    led_communicator = LEDCommunicator()
+    rospy.spin()

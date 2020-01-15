@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="ropod_led_communication" type="led_communication" respawn="false" name="ropod_led_communication" output="screen">
+        <remap from="task_progress_dock" to="/collect_cart/feedback" />
+        <remap from="task_progress_goto" to="/ropod/goto/feedback" />
+        <remap from="route_nav_feedback" to="/route_navigation/feedback" />
+        <remap from="task_progress_elevator" to="/ropod/take_elevator/feedback" />
+        <remap from="align_goal" to="/ropod/align_to_wall/goal" />
+        <remap from="align_result" to="/ropod/align_to_wall/result" />
+        <remap from="route_planner_goal" to="/route_planner/goal" />
+        <remap from="route_planner_result" to="/route_planner/result" />
+        <remap from="ethercat_topic" to="/sw_ethercat_parser/data" />
+        <remap from="napoleon_state" to="/napoleon_driving/current_state" />
+    </node>
+</launch>
